@@ -1,48 +1,5 @@
-type Weather = '晴れ' | '曇り' | '雨' | '霧' | '雪'
-type Season = '春' | '夏' | '秋' | '冬'
-
-interface LatLng {
-  lat: number
-  lng: number
-}
-
-interface Observation {
-  id: string
-  species: string
-  japaneseCommonName: string
-  date: string
-  time: string
-  location: string
-  latlng?: LatLng
-  count: number | 'X'
-  weather: Weather
-  notes: string
-  imageDataUrl?: string
-}
-
-const WEATHER_ICONS: Record<Weather, string> = {
-  晴れ: '☀',
-  曇り: '☁',
-  雨: '☂',
-  霧: '〰',
-  雪: '❄',
-}
-
-function getSeason(dateStr: string): Season {
-  const month = new Date(dateStr).getMonth() + 1
-
-  if (month >= 3 && month <= 5) return '春'
-  if (month >= 6 && month <= 8) return '夏'
-  if (month >= 9 && month <= 11) return '秋'
-
-  return '冬'
-}
-
-function formatDate(dateStr: string): string {
-  const d = new Date(dateStr)
-
-  return `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日`
-}
+import type { Observation, Season } from '../types/observation'
+import { WEATHER_ICONS, formatDate, getSeason} from '../utils/observation'
 
 export default function ObservationCard({ obs, onClick }: { obs: Observation; onClick: () => void }) {
   const season = getSeason(obs.date)

@@ -6,28 +6,8 @@ import LocationPicker from '../components/LocationPicker'
 import 'leaflet/dist/leaflet.css'
 import ObservationCard from "../components/ObservationCard";
 import ObservationDetail from '../components/ObservationDetail'
-
-type Weather = '晴れ' | '曇り' | '雨' | '霧' | '雪'
-type Season = '春' | '夏' | '秋' | '冬'
-
-interface LatLng {
-  lat: number
-  lng: number
-}
-
-interface Observation {
-  id: string
-  species: string
-  japaneseCommonName: string
-  date: string
-  time: string
-  location: string
-  latlng?: LatLng
-  count: number | 'X'
-  weather: Weather
-  notes: string
-  imageDataUrl?: string
-}
+import type { LatLng, Observation, Weather, Season} from "../types/observation"
+import { WEATHER_ICONS, formatDate, getSeason} from '../utils/observation'
 
 const SAMPLE_DATA: Observation[] = [
   {
@@ -94,27 +74,6 @@ const SAMPLE_DATA: Observation[] = [
     notes: '浅瀬で静止し魚を待ち構える姿勢。足を使って魚を追い込む行動も見られた。',
   },
 ]
-
-const WEATHER_ICONS: Record<Weather, string> = {
-  '晴れ': '☀',
-  '曇り': '☁',
-  '雨': '☂',
-  '霧': '〰',
-  '雪': '❄',
-}
-
-function getSeason(dateStr: string): Season {
-  const month = new Date(dateStr).getMonth() + 1
-  if (month >= 3 && month <= 5) return '春'
-  if (month >= 6 && month <= 8) return '夏'
-  if (month >= 9 && month <= 11) return '秋'
-  return '冬'
-}
-
-function formatDate(dateStr: string): string {
-  const d = new Date(dateStr)
-  return `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日`
-}
 
 function ObservationForm({
   initial,
