@@ -4,19 +4,21 @@ import type { LatLng, Observation, Weather } from "../types/observation"
 import { WEATHER_ICONS } from '../utils/observation'
 import LocationPicker from "./LocationPicker"
 
+interface ObservationFormProps {
+  initial?: Observation
+  onClose: () => void
+  onSubmit: (observation: Observation) => void
+  pastLocations: Array<{ name: string; latlng: LatLng }>
+  submitLabel: string
+}
+
 export default function ObservationForm({
   initial,
   onClose,
   onSubmit,
   pastLocations,
   submitLabel,
-}: {
-  initial?: Observation
-  onClose: () => void
-  onSubmit: (obs: Observation) => void
-  pastLocations: Array<{ name: string; latlng: LatLng }>
-  submitLabel: string
-}) {
+}: ObservationFormProps) {
   const [form, setForm] = useState({
     japaneseCommonName: initial?.japaneseCommonName ?? '',
     species: initial?.species ?? '',
