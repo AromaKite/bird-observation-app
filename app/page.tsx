@@ -11,11 +11,12 @@ import { getSeason } from '../utils/observation';
 
 
 
-export default function App() {
-
+export default function Home() {
   const {
     observations,
-    setObservations,
+    addObservation,
+    updateObservation,
+    deleteObservation,
   } = useObservations()
 
   const [selected, setSelected] = useState<Observation | null>(null)
@@ -57,17 +58,6 @@ export default function App() {
     else list = [...list].sort((a, b) => a.japaneseCommonName.localeCompare(b.japaneseCommonName, 'ja'))
     return list
   }, [observations, filter, sortBy, search])
-
-  const addObservation = (obs: Observation) => {
-    setObservations((prev) => [obs, ...prev])
-    setShowAdd(false)
-  }
-
-  const updateObservation = (obs: Observation) => {
-    setObservations((prev) => prev.map((o) => (o.id === obs.id ? obs : o)))
-    setEditing(null)
-    setSelected(obs)
-  }
 
   const SEASONS: ('すべて' | Season)[] = ['すべて', '春', '夏', '秋', '冬']
 
