@@ -183,6 +183,16 @@ export default function Home() {
           obs={selected}
           onClose={() => setSelected(null)}
           onEdit={() => { setEditing(selected); setSelected(null) }}
+          onDelete={() => {
+            const confirmed = window.confirm(
+              'この観察記録を削除しますか？'
+            )
+
+            if (!confirmed) return
+
+            deleteObservation(selected.id)
+            setSelected(null)
+          }}
         />
       )}
       {showAdd && (

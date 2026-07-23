@@ -68,7 +68,7 @@ export default function ObservationForm({
     const count: number | 'X' =
       form.countStr.trim().toUpperCase() === 'X' ? 'X' : parseInt(form.countStr) || 1
     onSubmit({
-      id: initial?.id ?? Date.now().toString(),
+      id: initial?.id ?? crypto.randomUUID(),
       japaneseCommonName: form.japaneseCommonName,
       species: form.species,
       date: form.date,

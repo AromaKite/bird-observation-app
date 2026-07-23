@@ -1,7 +1,14 @@
-import type { Observation, Season } from '../types/observation'
-import { WEATHER_ICONS, formatDate, getSeason} from '../utils/observation'
+import type { Observation } from '../types/observation'
+import { WEATHER_ICONS, formatDate, getSeason } from '../utils/observation'
 
-export default function ObservationDetail({ obs, onClose, onEdit }: { obs: Observation; onClose: () => void; onEdit: () => void }) {
+interface ObservationDetailProps {
+  obs: Observation
+  onClose: () => void
+  onEdit: () => void
+  onDelete: () => void
+}
+
+export default function ObservationDetail({ obs, onClose, onEdit, onDelete }: ObservationDetailProps) {
   const mapUrl = obs.latlng
     ? `https://www.openstreetmap.org/export/embed.html?bbox=${obs.latlng.lng - 0.005},${obs.latlng.lat - 0.003},${obs.latlng.lng + 0.005},${obs.latlng.lat + 0.003}&layer=mapnik&marker=${obs.latlng.lat},${obs.latlng.lng}`
     : null
@@ -34,6 +41,12 @@ export default function ObservationDetail({ obs, onClose, onEdit }: { obs: Obser
                 className="text-xs text-[#2A4A1E] border border-[#2A4A1E] px-3 py-1.5 hover:bg-[#2A4A1E] hover:text-[#F4EFE3] transition-colors"
               >
                 編集
+              </button>
+              <button
+                onClick={onDelete}
+                className="text-xs text-[#C4B898] border border-[#C4B898] px-3 py-1.5 hover:bg-[#C4B898] hover:text-[#1C1B16] transition-colors"
+              >
+                削除
               </button>
               <button
                 onClick={onClose}
