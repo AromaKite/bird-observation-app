@@ -14,6 +14,8 @@ import { getSeason } from '../utils/observation';
 export default function Home() {
   const {
     observations,
+    isLoading,
+    error,
     addObservation,
     updateObservation,
     deleteObservation,
@@ -60,6 +62,23 @@ export default function Home() {
   }, [observations, filter, sortBy, search])
 
   const SEASONS: ('すべて' | Season)[] = ['すべて', '春', '夏', '秋', '冬']
+
+  if (isLoading) {
+    return (
+      <main className="p-8">
+        <p>観察記録を読み込んでいます...</p>
+      </main>
+    )
+  }
+
+if (error) {
+  return (
+    <main className="p-8">
+      <p>エラーが発生しました。</p>
+      <p>{error}</p>
+    </main>
+  )
+}
 
   return (
     <div className="min-h-screen bg-[#F4EFE3]">
