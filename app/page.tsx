@@ -71,14 +71,28 @@ export default function Home() {
     )
   }
 
-if (error) {
-  return (
-    <main className="p-8">
-      <p>エラーが発生しました。</p>
-      <p>{error}</p>
-    </main>
-  )
-}
+  if (error) {
+    return (
+      <main className="p-8">
+        <p>エラーが発生しました。</p>
+        <p>{error}</p>
+      </main>
+    )
+  }
+
+  async function handleAddObservation(
+    observation: Observation
+  ): Promise<void> {
+    await addObservation(observation)
+    setShowAdd(false)
+  }
+
+  async function handleUpdateObservation(
+    observation: Observation
+  ): Promise<void> {
+    await updateObservation(observation)
+    setEditing(null)
+  }
 
   return (
     <div className="min-h-screen bg-[#F4EFE3]">
@@ -217,16 +231,17 @@ if (error) {
       {showAdd && (
         <ObservationForm
           onClose={() => setShowAdd(false)}
-          onSubmit={addObservation}
+          onSubmit={handleAddObservation}
           pastLocations={pastLocations}
           submitLabel="記録する"
         />
       )}
+
       {editing && (
         <ObservationForm
           initial={editing}
           onClose={() => setEditing(null)}
-          onSubmit={updateObservation}
+          onSubmit={handleUpdateObservation}
           pastLocations={pastLocations}
           submitLabel="保存する"
         />

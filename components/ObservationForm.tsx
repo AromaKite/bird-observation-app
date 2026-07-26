@@ -7,7 +7,7 @@ import LocationPicker from "./LocationPicker"
 interface ObservationFormProps {
   initial?: Observation
   onClose: () => void
-  onSubmit: (observation: Observation) => void
+  onSubmit: (observation: Observation) => void | Promise<void>
   pastLocations: Array<{ name: string; latlng: LatLng }>
   submitLabel: string
 }
@@ -63,11 +63,11 @@ export default function ObservationForm({
     setForm((f) => ({ ...f, latlng, location: f.location || address }))
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!form.japaneseCommonName || !form.location) return
     const count: number | 'X' =
       form.countStr.trim().toUpperCase() === 'X' ? 'X' : parseInt(form.countStr) || 1
-    onSubmit({
+    await onSubmit({
       id: initial?.id ?? crypto.randomUUID(),
       japaneseCommonName: form.japaneseCommonName,
       species: form.species,

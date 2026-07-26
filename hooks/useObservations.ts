@@ -44,25 +44,98 @@ export function useObservations() {
     fetchObservations()
   }, [])
 
-  function addObservation(
-    newObservation: Observation
+  async function addObservation(
+    observation: Observation
   ) {
-    setObservations((current) => [
-      newObservation,
-      ...current,
-    ])
+    try {
+      setError(null)
+
+      const response = await fetch('/api/observations', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(observation),
+      })
+
+      if (!response.ok) {
+        throw new Error(
+          `観察記録の追加に失敗しました: ${response.status}`
+        )
+      }
+
+      const createdObservation =
+        (await response.json()) as Observation
+
+      setObservations((current) => [
+        createdObservation,
+        ...current,
+      ])
+
+      return createdObservation
+    } catch (error) {
+      console.error('観察記録の追加エラー:', error)
+
+      const message =
+        error instanceof Error
+          ? error.message
+          : '観察記録の追加に失敗しました'
+
+      setError(message)
+      throw error
+    }
   }
 
-  function updateObservation(
-    updatedObservation: Observation
+  async function updateObservation(
+    observation: Observation
   ) {
-    setObservations((current) =>
-      current.map((observation) =>
-        observation.id === updatedObservation.id
-          ? updatedObservation
-          : observation
+    try {
+      setError(null)
+
+      const response = await fetch(
+        `/api/observations/${observation.id}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(observation),
+        }
       )
-    )
+
+      if (!response.ok) {
+        throw new Error(
+          `観察記録の更新に失敗しました: ${response.status}`
+        )
+      }
+
+      const updatedObservation =
+        (await response.json()) as Observation
+
+      setObservations((current) =>
+        current.map((currentObservation) =>
+          currentObservation.id ===
+          updatedObservation.id
+            ? updatedObservation
+            : currentObservation
+        )
+      )
+
+      return updatedObservation
+    } catch (error) {
+      console.error(
+        '観察記録の更新エラー:',
+        error
+      )
+
+      const message =
+        error instanceof Error
+          ? error.message
+          : '観察記録の更新に失敗しました'
+
+      setError(message)
+      throw error
+    }
   }
 
   function deleteObservation(id: string) {
