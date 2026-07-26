@@ -138,12 +138,40 @@ export function useObservations() {
     }
   }
 
-  function deleteObservation(id: string) {
-    setObservations((current) =>
-      current.filter(
-        (observation) => observation.id !== id
+  async function deleteObservation(id: string) {
+    try {
+      setError(null)
+
+      const response = await fetch(
+        `/api/observations/${id}`,
+        {
+          method: 'DELETE',
+        }
       )
-    )
+
+      if (!response.ok) {
+        throw new Error(
+          `観察記録の削除に失敗しました: ${response.status}`
+        )
+      }
+
+      setObservations((current) =>
+        current.filter(
+          (observation) => observation.id !== id
+        )
+      )
+    } catch (error) {
+      console.error(error)
+
+      const message =
+        error instanceof Error
+          ? error.message
+          : '観察記録の削除に失敗しました'
+
+      setError(message)
+
+      throw error
+    }
   }
 
   return {

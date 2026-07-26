@@ -94,6 +94,17 @@ export default function Home() {
     setEditing(null)
   }
 
+  async function handleDeleteObservation(id: string) {
+  try {
+    await deleteObservation(id)
+
+    // 削除していた詳細画面を閉じる
+    setSelected(null)
+  } catch {
+    // エラー時は何もしない
+  }
+}
+
   return (
     <div className="min-h-screen bg-[#F4EFE3]">
       <header className="border-b border-[#C4B898] bg-[#FDFAF2]">
@@ -223,7 +234,7 @@ export default function Home() {
 
             if (!confirmed) return
 
-            deleteObservation(selected.id)
+            handleDeleteObservation(selected.id)
             setSelected(null)
           }}
         />

@@ -36,3 +36,35 @@ export async function PUT(
     )
   }
 }
+
+export async function DELETE(
+  request: Request,
+  context: RouteContext
+) {
+  try {
+    const { id } = await context.params
+
+    console.log(`観察記録を削除: ${id}`)
+
+    return Response.json(
+      {
+        message: '観察記録を削除しました',
+        id,
+      },
+      {
+        status: 200,
+      }
+    )
+  } catch (error) {
+    console.error('観察記録の削除に失敗しました', error)
+
+    return Response.json(
+      {
+        message: '観察記録の削除に失敗しました',
+      },
+      {
+        status: 400,
+      }
+    )
+  }
+}
